@@ -1,0 +1,50 @@
+import matplotlib.pyplot as plt
+import librosa
+import librosa.display
+from config import SAMPLE_RATE, N_MELS, HOP_LENGTH, emotion_labels
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+
+
+def plot_mel(y, sr=SAMPLE_RATE, title="Log-Mel Spectrogram"):
+    mel = librosa.feature.melspectrogram(
+        y=y,
+        sr=sr,
+        n_mels=N_MELS,
+        hop_length=HOP_LENGTH
+    )
+    log_mel = librosa.power_to_db(mel)
+
+    plt.figure(figsize=(6, 4))
+    librosa.display.specshow(
+        log_mel,
+        sr=sr,
+        hop_length=HOP_LENGTH,
+        x_axis="time",
+        y_axis="mel"
+    )
+    plt.colorbar(format="%+2.0f dB")
+    plt.title(title)
+    plt.tight_layout()
+    plt.show()
+
+def plot_confusion_matrix(y_true, y_pred):
+    
+
+    cm = confusion_matrix(y_true, y_pred)
+
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(
+        cm,
+        annot=True,
+        fmt="d",
+        xticklabels=emotion_labels,
+        yticklabels=emotion_labels,
+        cmap="Blues"
+    )
+
+    plt.xlabel("Predicted")
+    plt.ylabel("True")
+    plt.title("Confusion Matrix | Speech Emotion Recognition")
+    plt.tight_layout()
+    plt.show()

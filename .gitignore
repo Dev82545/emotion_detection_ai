@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+
+venv/
+
+.ipynb_checkpoints/
+
+data/
+*.wav
+
+*.pth
+*.h5
+*.keras
+
+.DS_Store
+Thumbs.db
+# Large generated data
+*.npy
+processed_old/

@@ -2,7 +2,9 @@ numpy
 matplotlib
 seaborn
 librosa
+soundfile
+scikit-learn
 tqdm
 torch
-torchvision
-torchaudio
+notebook
+ipykernel

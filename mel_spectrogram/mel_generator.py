@@ -2,7 +2,7 @@ import numpy as np
 import librosa
 from config import SAMPLE_RATE, N_MELS, HOP_LENGTH, MAX_LEN
 
-def generate_logmel(y, sr=SAMPLE_RATE, max_len=MAX_LEN):
+def extract_logmel(y, sr, max_len):
     """
     Convert waveform to fixed-size Log-Mel Spectrogram.
     """
@@ -12,7 +12,8 @@ def generate_logmel(y, sr=SAMPLE_RATE, max_len=MAX_LEN):
         n_mels=N_MELS,
         hop_length=HOP_LENGTH
     )
-    log_mel = librosa.power_to_db(mel)
+
+    log_mel = librosa.power_to_db(mel, ref=np.max)
 
     # Pad / trim time axis
     if log_mel.shape[1] < max_len:

@@ -13,11 +13,11 @@ def add_noise(y, noise_factor=0.005):
 
 
 def pitch_shift(y, sr, n_steps=2):
-    return librosa.effects.pitch_shift(y, sr, n_steps=n_steps)
+    return librosa.effects.pitch_shift(y=y, sr=sr, n_steps=n_steps)
 
 
 def time_stretch(y, rate=1.1):
-    return librosa.effects.time_stretch(y, rate=rate)
+    return librosa.effects.time_stretch(y=y, rate=rate)
 
 def augment_audio(y, sr):
     """Apply ONE random augmentation"""

@@ -10,8 +10,7 @@ from tqdm import tqdm
 from .data_features import load_and_trim, parse_emotion
 from mel_spectrogram.mel_generator import extract_logmel
 from .data_augmentation import augment_audio
-
-
+from config import MAX_LEN
 def get_actor_dirs(data_dir: str):
     """
     Return sorted list of actor directories.
@@ -40,7 +39,6 @@ def actor_wise_split(data_dir: str, train_ratio: float = 0.8):
 
 def build_dataset_from_actors(data_dir: str, actor_list: list, augment: bool = False):
     X, y, genders = [], [], []
-
     for actor in tqdm(actor_list, desc="Building dataset"):
         actor_dir = f"Actor_{actor:02d}"
         actor_path = os.path.join(data_dir, actor_dir)
@@ -55,13 +53,13 @@ def build_dataset_from_actors(data_dir: str, actor_list: list, augment: bool = F
             emotion = parse_emotion(file)
 
             audio, sr = load_and_trim(path)
-            mel = extract_logmel(audio, sr)
+            mel = extract_logmel(audio, sr, MAX_LEN)
             X.append(mel)
             y.append(emotion)
 
             if augment:
                 audio_aug = augment_audio(audio, sr)
-                features_aug = extract_logmel(audio_aug, sr)
+                features_aug = extract_logmel(audio_aug, sr, MAX_LEN)
                 X.append(features_aug)
                 y.append(emotion)
                 genders.append(gender)

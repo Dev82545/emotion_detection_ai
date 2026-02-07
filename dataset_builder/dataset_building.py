@@ -6,7 +6,7 @@ import numpy as np
 from tqdm import tqdm
 
 from .data_features import load_and_trim, parse_emotion
-from mel_spectrogram.mel_generator import generate_logmel
+from mel_spectrogram.mel_generator import extract_logmel
 from .data_augmentation import augment_audio
 
 
@@ -18,7 +18,7 @@ def build_dataset(file_paths, config, augment=False):
 
     X = []
     y = []
-
+    MAX_LEN = config["max_len"]
     for path in tqdm(file_paths):
         if not path.endswith(".wav"):
             continue
@@ -30,14 +30,14 @@ def build_dataset(file_paths, config, augment=False):
         audio, sr = load_and_trim(path)
 
         # 3️⃣ original mel
-        mel = generate_logmel(audio, sr)
+        mel = extract_logmel(audio, sr, MAX_LEN)
         X.append(mel)
         y.append(emotion)
 
         # 4️⃣ augmented ONCE (training only)
         if augment:
             audio_aug = augment_audio(audio, sr)
-            mel_aug = generate_logmel(audio_aug, sr)
+            mel_aug = extract_logmel(audio_aug, sr, MAX_LEN)
             X.append(mel_aug)
             y.append(emotion)
 
